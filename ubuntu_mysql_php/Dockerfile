@@ -4,7 +4,7 @@ MAINTAINER Andy Jenkins <andy@gear11.com>, with thanks to github.com/eugeneware
 # This is a base image for installing Ubuntu and the main WordPress dependencies.
 # The G11DockerWP image builds off of this one.
 # Start by running:
-# sudo docker build -t "ubuntu_myql_php" ubuntu_myql_php
+# sudo docker build -t "ubuntu_mysql_php" ubuntu_mysql_php
 
 RUN echo Updating Ubuntu
 RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list

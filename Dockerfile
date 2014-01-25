@@ -1,19 +1,7 @@
-FROM ubuntu
+# First install the ubuntu_mysql_php image.
+# See ubuntu_mysql_php for details.
+FROM ubuntu_mysql_php
 MAINTAINER Andy Jenkins <andy@gear11.com>, with thanks to github.com/eugeneware
-
-RUN echo Updating Ubuntu
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get -y upgrade
-# Keep upstart from complaining
-RUN dpkg-divert --local --rename --add /sbin/initctl
-RUN ln -s /bin/true /sbin/initctl
-
-RUN echo Installing dependencies via Yum
-# Basic Requirements
-RUN apt-get -y install mysql-server mysql-client nginx php5-fpm php5-mysql php-apc pwgen python-setuptools curl git unzip
-# Wordpress Requirements
-RUN apt-get -y install php5-curl php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl
 
 RUN echo Configuring MySQL and creating the WordPress DB user
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
