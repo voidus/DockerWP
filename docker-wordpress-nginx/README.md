@@ -1,0 +1,1 @@
+Vendored in from https://github.com/eugeneware/docker-wordpress-nginx
