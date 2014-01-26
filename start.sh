@@ -1,5 +1,29 @@
 #!/bin/bash
 
+# Entry point for G11DockerWP images.
+#
+# Supports the following options:
+#   -s         Shell out (start the services in the background and give you a bash prompt)
+#   -u   url   Update the base URL in the WordPress database
+#
+#   Example:
+#     sudo docker run -i -p 80:80 -v /duplicator-pkg-dir:/wp-install -t my_wordpress -u http://127.0.0.1 -s
+#
+# Initialize args
+new_wp_base_url=""
+shell_out=0
+
+while getopts "sb:" opt; do
+  case "$opt" in
+    s)  shell_out=1
+       ;;
+    u)  new_wp_base_url=$OPTARG
+       ;;
+  esac
+done
+
+echo "new_wp_base_url='$new_wp_base_url', shell_out='$shell_out', Leftovers: $@"
+
 # If wp-config.php doesn't exist, then WordPress has not yet been
 # installed from the Duplicator installer package
 if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
@@ -15,7 +39,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   echo Starting MySQL and adding root and wordpress users
   /usr/bin/mysqld_safe & 
   sleep 10s
-  STARTED_MYSQL=1
+  started_mysql=1
   WORDPRESS_DB="wordpress"
   ROOT_DB_PASSWORD=`pwgen -c -n -1 12`
   WP_DB_PASSWORD=`pwgen -c -n -1 12`
@@ -41,29 +65,33 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   chown -R www-data:www-data /usr/share/nginx/www
 fi
 
-# If an argument is provided, the use it as the replacement value for the original base URL
-if [ ! "$1" == "" ]; then
-  NEW_WP_BASE_URL=$1
-  ORIG_WP_BASE_URL=`/bin/bash /G11DockerWP/g11_get_installer_host.sh /wp-install/installer.php`
-  echo Updating DB links from $ORIG_WP_BASE_URL to $NEW_WP_BASE_URL
-  if [ "$ORIG_WP_BASE_URL" == "" ]; then
+# If new URL provided, execute DB search and replace
+if [ ! "$new_wp_base_url" == "" ]; then
+  orig_wp_base_url=`/bin/bash /G11DockerWP/g11_get_installer_host.sh /wp-install/installer.php`
+  echo "Updating DB links from '$orig_wp_base_url' to '$new_wp_base_url'"
+  if [ "$orig_wp_base_url" == "" ]; then
     echo Could not identify original WordPress base URL from installer.php.
     echo No database search and replace will be executed.
   else
-    if [ ! "$STARTED_MYSQL" == "1" ]; then
+    if [ ! "$started_mysql" == "1" ]; then
       echo Starting MySQL for database updates
       /usr/bin/mysqld_safe & 
       sleep 10s
-      STARTED_MYSQL=1
+      started_mysql=1
     fi
     php /G11DockerWP/g11.wp.relocate.php wordpress $WP_DB_PASSWORD $ORIG_WP_BASE_URL $NEW_WP_BASE_URL 
   fi
 fi
 
-if [ "$STARTED_MYSQL" == "1" ]; then
+if [ "$started_mysql" == "1" ]; then
   echo Stopping MySQL...will restart via supervisord momentarily
   killall mysqld
 fi
   
 echo Starting the services
-/usr/local/bin/supervisord -n
+if [ "$shell_out" == "1" ]; then
+  /usr/local/bin/supervisord
+  /bin/bash
+else
+  /usr/local/bin/supervisord -n
+fi
