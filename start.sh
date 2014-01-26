@@ -8,8 +8,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   echo Checking for /wp-install
   if [ ! -d /wp-install ]; then
 	  echo The directory /wp-install does not exist.
-	  echo You must invoke Docker with a -v option to mount
-	  echo the Duplicator installer directory to /wp-install
+	  echo You must invoke Docker with a -v option to mount the Duplicator installer directory to /wp-install
 	  exit 1
   fi
   
@@ -21,7 +20,6 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   WP_DB_PASSWORD=`pwgen -c -n -1 12`
   #This is so the passwords show up in logs. 
   echo mysql root password: $ROOT_DB_PASSWORD
-  echo wordpress password: $WP_DB_PASSWORD
   echo $ROOT_DB_PASSWORD > /root-db-pw.txt
   echo $WP_DB_PASSWORD > /wordpress-db-pw.txt
   mysqladmin -u root password $ROOT_DB_PASSWORD 
@@ -30,7 +28,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   
   echo Installing WordPress from host WordPress Duplicator package
   rm -rf /usr/share/nginx/www
-  cp -R /wp-install /usr/share/nginx/www/.
+  cp -R /wp-install /usr/share/nginx/www
   cd /usr/share/nginx/www
   cat /G11DockerWP/g11.installer.shim.php installer.php > installer.with.shim.php
   php installer.with.shim.php localhost wordpress $WP_DB_PASSWORD wordpress *.zip
@@ -48,7 +46,7 @@ if [ "$1" != ""]; then
   NEW_WP_BASE_URL=$1
   echo Updating DB links from $ORIG_WP_BASE_URL to $NEW_WP_BASE_URL
   ORIG_WP_BASE_URL=`/G11DockerWP/g11.installer.host.sh /wp-install/installer.php`
-  if [ "$ORIG_WP_BASE_URL" == "" ]
+  if [ "$ORIG_WP_BASE_URL" == "" ]; then
     echo Couldn't identify original WordPress base URL from installer.php.
     echo No database search and replace will be executed.
   else
