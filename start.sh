@@ -80,8 +80,8 @@ if [ ! "$new_wp_base_url" == "" ]; then
       sleep 10s
       started_mysql=1
     fi
-    echo php /G11DockerWP/Search-Replace-DB-3.0.0/srdb.cli.php -h localhost -n wordpress -u wordpress -p $WP_DB_PASSWORD -s "$orig_wp_base_url" -r "new_wp_base_url"
-    php /G11DockerWP/Search-Replace-DB-3.0.0/srdb.cli.php -h localhost -n wordpress -u wordpress -p $WP_DB_PASSWORD -s "$orig_wp_base_url" -r "new_wp_base_url"
+    echo php /G11DockerWP/Search-Replace-DB-3.0.0/srdb.cli.php -h localhost -n wordpress -u wordpress -p $WP_DB_PASSWORD -s "$orig_wp_base_url" -r "$new_wp_base_url"
+    php /G11DockerWP/Search-Replace-DB-3.0.0/srdb.cli.php -h localhost -n wordpress -u wordpress -p $WP_DB_PASSWORD -s "$orig_wp_base_url" -r "$new_wp_base_url"
   fi
 fi
 
