@@ -39,7 +39,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   echo Making the WordPress directory writeable by Nginx
   chown -R www-data:www-data /usr/share/nginx/www
   
-  echo Stopping MySQL (will restart via supervisord momentarily)
+  echo Stopping MySQL...will restart via supervisord momentarily
   killall mysqld
 fi
 
