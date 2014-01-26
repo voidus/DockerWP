@@ -68,7 +68,7 @@ fi
 
 # If new URL provided, execute DB search and replace
 if [ ! "$new_wp_base_url" == "" ]; then
-  orig_wp_base_url=`/bin/bash /G11DockerWP/g11_get_installer_host.sh /wp-install/installer.php`
+  orig_wp_base_url=`cat /wp-install/installer.php | python /G11DockerWP/g11_get_installer_host.py`
   echo "Updating DB links from '$orig_wp_base_url' to '$new_wp_base_url'"
   if [ "$orig_wp_base_url" == "" ]; then
     echo Could not identify original WordPress base URL from installer.php.
