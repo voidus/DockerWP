@@ -12,7 +12,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
 	  exit 1
   fi
   
-  echo Provisioning MySQL
+  echo Starting MySQL and adding root and wordpress users
   /usr/bin/mysqld_safe & 
   sleep 10s
   WORDPRESS_DB="wordpress"
@@ -24,7 +24,6 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   echo $WP_DB_PASSWORD > /wordpress-db-pw.txt
   mysqladmin -u root password $ROOT_DB_PASSWORD 
   mysql -uroot -p$ROOT_DB_PASSWORD -e "CREATE DATABASE wordpress; GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost' IDENTIFIED BY '$WP_DB_PASSWORD'; FLUSH PRIVILEGES;"
-  killall mysqld
   
   echo Installing WordPress from host WordPress Duplicator package
   rm -rf /usr/share/nginx/www
@@ -39,6 +38,9 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   
   echo Making the WordPress directory writeable by Nginx
   chown -R www-data:www-data /usr/share/nginx/www
+  
+  echo Stopping MySQL (will restart via supervisord momentarily)
+  killall mysqld
 fi
 
 # If an argument is provided, the use it as the replacement value for the original base URL
