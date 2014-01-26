@@ -15,6 +15,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   echo Starting MySQL and adding root and wordpress users
   /usr/bin/mysqld_safe & 
   sleep 10s
+  STARTED_MYSQL = 1
   WORDPRESS_DB="wordpress"
   ROOT_DB_PASSWORD=`pwgen -c -n -1 12`
   WP_DB_PASSWORD=`pwgen -c -n -1 12`
@@ -38,9 +39,6 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   
   echo Making the WordPress directory writeable by Nginx
   chown -R www-data:www-data /usr/share/nginx/www
-  
-  echo Stopping MySQL...will restart via supervisord momentarily
-  killall mysqld
 fi
 
 # If an argument is provided, the use it as the replacement value for the original base URL
@@ -52,9 +50,20 @@ if [ ! "$1" == "" ]; then
     echo Could not identify original WordPress base URL from installer.php.
     echo No database search and replace will be executed.
   else
+    if [ ! $STARTED_MYSQL ]; then
+      echo Starting MySQL for database updates
+      /usr/bin/mysqld_safe & 
+      sleep 10s
+      STARTED_MYSQL = 1
+    fi
     php /G11DockerWP/g11.wp.relocate.php wordpress $WP_DB_PASSWORD $ORIG_WP_BASE_URL $NEW_WP_BASE_URL 
   fi
 fi
 
+if [ $STARTED_MYSQL ]; then
+  echo Stopping MySQL...will restart via supervisord momentarily
+  killall mysqld
+fi
+  
 echo Starting the services
 /usr/local/bin/supervisord -n
