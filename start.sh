@@ -49,7 +49,7 @@ if [ "$1" != ""]; then
   echo Updating DB links from $ORIG_WP_BASE_URL to $NEW_WP_BASE_URL
   ORIG_WP_BASE_URL=`/G11DockerWP/g11.installer.host.sh /wp-install/installer.php`
   if [ "$ORIG_WP_BASE_URL" == "" ]; then
-    echo Couldn't identify original WordPress base URL from installer.php.
+    echo Could not identify original WordPress base URL from installer.php.
     echo No database search and replace will be executed.
   else
     php g11.wp.relocate.php wordpress $WP_DB_PASSWORD $ORIG_WP_BASE_URL $NEW_WP_BASE_URL 
