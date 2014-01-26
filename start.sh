@@ -23,7 +23,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   echo $ROOT_DB_PASSWORD > /root-db-pw.txt
   echo $WP_DB_PASSWORD > /wordpress-db-pw.txt
   mysqladmin -u root password $ROOT_DB_PASSWORD 
-  mysql -uroot -p$MYSQL_PASSWORD -e "CREATE DATABASE wordpress; GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost' IDENTIFIED BY '$WP_DB_PASSWORD'; FLUSH PRIVILEGES;"
+  mysql -uroot -p$ROOT_DB_PASSWORD -e "CREATE DATABASE wordpress; GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost' IDENTIFIED BY '$WP_DB_PASSWORD'; FLUSH PRIVILEGES;"
   killall mysqld
   
   echo Installing WordPress from host WordPress Duplicator package

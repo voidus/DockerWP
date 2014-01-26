@@ -36,9 +36,11 @@ if (PHP_SAPI === 'cli' ) {
   $_POST["dbcharset"] = "utf8";
   $_POST["dbcollate"] = "utf8_general_ci";
 
-  function json_encode($s) {
-    print_r($s);
-    print("\n");
+  if (!function_exists('json_encode')) {
+    function json_encode($s) {
+      print_r($s);
+      print("\n");
+    }
   }
 
 }
