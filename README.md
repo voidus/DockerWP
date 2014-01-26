@@ -7,7 +7,7 @@ Thanks to [Eugene Ware](https://github.com/eugeneware/docker-wordpress-nginx)
 and [jbfink](https://github.com/jbfink/docker-wordpress)
 
 ## Prerequisites
-* Install Docker (requires 64-bit Linux, use VirtualBox for other OSes)
+* Docker (requires 64-bit Linux, use VirtualBox for other OSes)
 * Existing installer package of your WordPress site created with [Duplicator](http://wordpress.org/plugins/duplicator/)
 
 ## Installation
