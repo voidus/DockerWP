@@ -52,7 +52,7 @@ if [ ! "$1" == "" ]; then
     echo Could not identify original WordPress base URL from installer.php.
     echo No database search and replace will be executed.
   else
-    php g11.wp.relocate.php wordpress $WP_DB_PASSWORD $ORIG_WP_BASE_URL $NEW_WP_BASE_URL 
+    php /G11DockerWP/g11.wp.relocate.php wordpress $WP_DB_PASSWORD $ORIG_WP_BASE_URL $NEW_WP_BASE_URL 
   fi
 fi
 
