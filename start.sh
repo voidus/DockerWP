@@ -13,7 +13,7 @@
 new_wp_base_url=""
 shell_out=0
 
-while getopts "sb:" opt; do
+while getopts "su:" opt; do
   case "$opt" in
     s)  shell_out=1
        ;;
@@ -44,10 +44,11 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   ROOT_DB_PASSWORD=`pwgen -c -n -1 12`
   WP_DB_PASSWORD=`pwgen -c -n -1 12`
   #This is so the passwords show up in logs. 
-  echo mysql root password: $ROOT_DB_PASSWORD
+  echo MySQL root password: $ROOT_DB_PASSWORD
+  echo MySQL wordpress password: $WP_DB_PASSWORD
   echo $ROOT_DB_PASSWORD > /root-db-pw.txt
   echo $WP_DB_PASSWORD > /wordpress-db-pw.txt
-  mysqladmin -u root password $ROOT_DB_PASSWORD 
+  mysqladmin -u root password $ROOT_DB_PASSWORD
   mysql -uroot -p$ROOT_DB_PASSWORD -e "CREATE DATABASE wordpress; GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost' IDENTIFIED BY '$WP_DB_PASSWORD'; FLUSH PRIVILEGES;"
   
   echo Installing WordPress from host WordPress Duplicator package
@@ -79,7 +80,8 @@ if [ ! "$new_wp_base_url" == "" ]; then
       sleep 10s
       started_mysql=1
     fi
-    php /G11DockerWP/g11.wp.relocate.php wordpress $WP_DB_PASSWORD $ORIG_WP_BASE_URL $NEW_WP_BASE_URL 
+    php /G11DockerWP/Search-Replace-DB-3.0.0/srdb.cli.php -h localhost -n wordpress -u wordpress \
+		-p $WP_DB_PASSWORD -s "$orig_wp_base_url" -r "new_wp_base_url"
   fi
 fi
 
