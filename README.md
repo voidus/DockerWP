@@ -8,7 +8,7 @@ and [jbfink](https://github.com/jbfink/docker-wordpress)
 
 ## Prerequisites
 * Install Docker (requires 64-bit Linux, use VirtualBox for other OSes)
-* Export of a WordPress site created with [Duplicator](http://wordpress.org/plugins/duplicator/)
+* Existing installer package of your WordPress site created with [Duplicator](http://wordpress.org/plugins/duplicator/)
 
 ## Installation
 
