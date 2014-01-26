@@ -1,7 +1,7 @@
 G11DockerWP
 ===========
 
-A Docker-based solution for cloning existing WordPress sites.
+A Docker-based solution for cloning existing WordPress sites.  For background, see the post on [Gear 11](http://gear11.com/2014/01/wordpress-docker/)
 
 Thanks to [Eugene Ware](https://github.com/eugeneware/docker-wordpress-nginx)
 and [jbfink](https://github.com/jbfink/docker-wordpress)
