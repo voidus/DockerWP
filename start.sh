@@ -44,7 +44,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
 fi
 
 # If an argument is provided, the use it as the replacement value for the original base URL
-if [ "$1" != ""]; then
+if [ ! "$1" == "" ]; then
   NEW_WP_BASE_URL=$1
   echo Updating DB links from $ORIG_WP_BASE_URL to $NEW_WP_BASE_URL
   ORIG_WP_BASE_URL=`/G11DockerWP/g11.installer.host.sh /wp-install/installer.php`
