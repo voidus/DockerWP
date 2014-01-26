@@ -44,8 +44,8 @@ fi
 # If an argument is provided, the use it as the replacement value for the original base URL
 if [ ! "$1" == "" ]; then
   NEW_WP_BASE_URL=$1
-  echo Updating DB links from $ORIG_WP_BASE_URL to $NEW_WP_BASE_URL
   ORIG_WP_BASE_URL=`/bin/bash /G11DockerWP/g11_get_installer_host.sh /wp-install/installer.php`
+  echo Updating DB links from $ORIG_WP_BASE_URL to $NEW_WP_BASE_URL
   if [ "$ORIG_WP_BASE_URL" == "" ]; then
     echo Could not identify original WordPress base URL from installer.php.
     echo No database search and replace will be executed.
