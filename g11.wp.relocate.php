@@ -9,7 +9,7 @@
  * 
  */
  
-require_once( 'Search-Replace-DB-3.0.0/srdb.cli.php' );
+require_once( 'Search-Replace-DB-3.0.0/srdb.class.php' );
 
 define("USAGE", "php g11.wp.relocate.php wp_db_user wp_db_pass orig_wp_base_url new_wp_base_url\n");
 
@@ -35,9 +35,8 @@ if ($argc > 1) {
 		'search' => $orig_wp_base_url,
 		'replace' => $new_wp_base_url
 	);
-
 	
-	$report = new icit_srdb_cli( $args );
+	$report = new icit_srdb( $args );
 	
 	if ( $report && ( $args[ 'dry_run' ] || empty( $report->errors[ 'results' ] ) ) ) {
 		echo "\nAnd we're done!";
