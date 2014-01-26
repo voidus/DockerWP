@@ -15,7 +15,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   echo Starting MySQL and adding root and wordpress users
   /usr/bin/mysqld_safe & 
   sleep 10s
-  STARTED_MYSQL = 1
+  STARTED_MYSQL=1
   WORDPRESS_DB="wordpress"
   ROOT_DB_PASSWORD=`pwgen -c -n -1 12`
   WP_DB_PASSWORD=`pwgen -c -n -1 12`
@@ -50,17 +50,17 @@ if [ ! "$1" == "" ]; then
     echo Could not identify original WordPress base URL from installer.php.
     echo No database search and replace will be executed.
   else
-    if [ ! $STARTED_MYSQL ]; then
+    if [ ! "$STARTED_MYSQL" == "1" ]; then
       echo Starting MySQL for database updates
       /usr/bin/mysqld_safe & 
       sleep 10s
-      STARTED_MYSQL = 1
+      STARTED_MYSQL=1
     fi
     php /G11DockerWP/g11.wp.relocate.php wordpress $WP_DB_PASSWORD $ORIG_WP_BASE_URL $NEW_WP_BASE_URL 
   fi
 fi
 
-if [ $STARTED_MYSQL ]; then
+if [ "$STARTED_MYSQL" == "1" ]; then
   echo Stopping MySQL...will restart via supervisord momentarily
   killall mysqld
 fi
