@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# Entry point for G11DockerWP images.
+# Entry point for the G11DockerWP image.
 #
 # Supports the following options:
-#   -s         Shell out (start the services in the background and give you a bash prompt)
+#   -s         Shell out (start the services in the background and present bash prompt)
 #   -u   url   Update the base URL in the WordPress database
 #
 #   Example:
 #     sudo docker run -i -p 80:80 -v /duplicator-pkg-dir:/wp-install -t my_wordpress -u http://127.0.0.1 -s
 #
-# Initialize args
+
+# Parse command line options
 new_wp_base_url=""
 shell_out=0
-
 while getopts "su:" opt; do
   case "$opt" in
     s)  shell_out=1
@@ -21,7 +21,6 @@ while getopts "su:" opt; do
        ;;
   esac
 done
-
 echo "new_wp_base_url='$new_wp_base_url', shell_out='$shell_out', Leftovers: $@"
 
 # If wp-config.php doesn't exist, then WordPress has not yet been
@@ -92,8 +91,8 @@ fi
   
 echo Starting the services
 if [ "$shell_out" == "1" ]; then
-  /usr/local/bin/supervisord
+  /usr/local/bin/supervisord -c /etc/supervisord.conf
   /bin/bash
 else
-  /usr/local/bin/supervisord -n
+  /usr/local/bin/supervisord -n -c /etc/supervisord.conf
 fi
