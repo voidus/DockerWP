@@ -47,7 +47,7 @@ RUN echo Starting services
 # We use ENTRYPOINT rather than CMD so that args after the image name go to us.
 # The first time you run this, pass in the new WordPress base URL as an argument,
 # in order to fix up links in the database
-ENTRYPOINT ["start.sh" ]
+ENTRYPOINT ["/G11DockerWP/start.sh" ]
 
 # private expose
 EXPOSE 80
