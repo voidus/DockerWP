@@ -1,12 +1,13 @@
-FROM ubuntu
+FROM ubuntu:raring
 MAINTAINER Andy Jenkins <andy@gear11.com>, with thanks to github.com/eugeneware
 
 RUN echo Updating Ubuntu
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
+RUN echo "deb http://archive.ubuntu.com/ubuntu raring main universe" > /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get -y upgrade
 # Keep upstart from complaining
 RUN dpkg-divert --local --rename --add /sbin/initctl
+RUN rm /sbin/initctl
 RUN ln -s /bin/true /sbin/initctl
 
 RUN echo Installing dependencies via Yum
