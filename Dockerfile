@@ -35,7 +35,6 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN echo Configuring PHP-FPM
 RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
 RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php5/fpm/php-fpm.conf
-RUN sed -i -e "s/fastcgi_pass 127.0.0.1:9000/fastcgi_pass unix:\/var\/run\/php5-fpm.sock/g" /etc/nginx/sites-available/default
 RUN find /etc/php5/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
 
 RUN echo Deploying project assets
