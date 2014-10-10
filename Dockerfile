@@ -1,8 +1,8 @@
-FROM ubuntu:raring
+FROM ubuntu:trusty
 MAINTAINER Andy Jenkins <andy@gear11.com>, with thanks to github.com/eugeneware
 
 RUN echo Updating Ubuntu
-RUN echo "deb http://archive.ubuntu.com/ubuntu raring main universe" > /etc/apt/sources.list
+RUN echo "deb http://archive.ubuntu.com/ubuntu trusty main universe" > /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get -y upgrade
 # Keep upstart from complaining
